@@ -6,6 +6,8 @@ The module uses friend.tech APIs (by default) and you can change the nodeURL to 
 
 Developed by [ItsAditya](https://twitter.com/itsaditya_xyz)
 
+For support join discord: [FriendTechFeed](https://discord.gg/sVNcFK73YW)
+
 ## How to Use:
 
 # Platform Info
