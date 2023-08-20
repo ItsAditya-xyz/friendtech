@@ -1,0 +1,1 @@
+from friendtech.Platform import Platform
