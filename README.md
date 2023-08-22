@@ -42,8 +42,8 @@ print(recentlyJoined)
 import friendtech
 import json
 
-
-platform = friendtech.Platform()
+jwt = <YOUR JWT TOKEN> # get this from local storage of friendtech in your browser
+platform = friendtech.Platform(jwt=jwt)
 addressInfo = platform.getAddressFromTwitterUsername("itsaditya_xyz").json()
 print(addressInfo)
 ````
