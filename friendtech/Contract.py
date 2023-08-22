@@ -78,3 +78,22 @@ class Contract:
         sharesOwned = contract.functions.sharesBalance(
             checkSumSubjectAddress, checkSumAddress).call()
         return sharesOwned
+
+    # BETA FUNCTIONS. NOT THOROUGLY TESTED. USE AT YOUR OWN RISK
+    def buyShares(self, addressToBuy, payableAmount,  shareCount=1):
+        checkSumAddress = web3.Web3.toChecksumAddress(addressToBuy)
+        w3 = web3.Web3(web3.HTTPProvider(self.BASE_MAINNET))
+        contractABI = open("./friendtech/contractABI.json", "r").read()
+        contract = w3.eth.contract(
+            address=self.CONTRACT_ADDRESS, abi=contractABI)
+        callFunction = contract.functions.buyShares().buildTransaction({"buyShares": int(
+            payableAmount), "sharesSubject": checkSumAddress, "amount": shareCount})
+
+        signedTransaction = w3.eth.account.sign_transaction(
+            callFunction, private_key=self.PRIVATE_KEY)
+
+        sendTransaction = web3.eth.send_raw_transaction(
+            signedTransaction.rawTransaction)
+
+        transactionReceipt = web3.eth.wait_for_transaction_receipt(sendTransaction)
+        return transactionReceipt
