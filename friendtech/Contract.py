@@ -1,6 +1,6 @@
 '''THIS FILE HAS CODE TO INTRACT WITH THE CONTRACT'''
 import web3
-import os
+from eth_account import Account
 
 
 class Contract:
@@ -81,13 +81,22 @@ class Contract:
 
     # BETA FUNCTIONS. NOT THOROUGLY TESTED. USE AT YOUR OWN RISK
     def buyShares(self, addressToBuy, payableAmount,  shareCount=1):
-        checkSumAddress = web3.Web3.toChecksumAddress(addressToBuy)
+        addressToBuyCheckSum = web3.Web3.toChecksumAddress(addressToBuy)
+        userAccount = Account.from_key(self.PRIVATE_KEY)
+        userAddressCheckSum = w3.toChecksumAddress(userAccount.address)
         w3 = web3.Web3(web3.HTTPProvider(self.BASE_MAINNET))
         contractABI = open("./friendtech/contractABI.json", "r").read()
+        chainID = w3.eth.chain_id
+        nounce = w3.eth.get_transaction_count(userAddressCheckSum)
         contract = w3.eth.contract(
             address=self.CONTRACT_ADDRESS, abi=contractABI)
-        callFunction = contract.functions.buyShares().buildTransaction({"buyShares": int(
-            payableAmount), "sharesSubject": checkSumAddress, "amount": shareCount})
+
+        callFunction = contract.functions.buyShares(addressToBuyCheckSum, shareCount).buildTransaction({
+            "value": payableAmount,
+            "chainId": chainID,
+            "from": userAddressCheckSum,
+            "nounce": nounce
+        })
 
         signedTransaction = w3.eth.account.sign_transaction(
             callFunction, private_key=self.PRIVATE_KEY)
@@ -95,5 +104,34 @@ class Contract:
         sendTransaction = web3.eth.send_raw_transaction(
             signedTransaction.rawTransaction)
 
-        transactionReceipt = web3.eth.wait_for_transaction_receipt(sendTransaction)
+        transactionReceipt = web3.eth.wait_for_transaction_receipt(
+            sendTransaction)
+        return transactionReceipt
+
+    def sellShares(self, addressToSell, shareCount=1):
+        addressToBuyCheckSum = web3.Web3.toChecksumAddress(addressToSell)
+        userAccount = Account.from_key(self.PRIVATE_KEY)
+        userAddressCheckSum = w3.toChecksumAddress(userAccount.address)
+        w3 = web3.Web3(web3.HTTPProvider(self.BASE_MAINNET))
+        contractABI = open("./friendtech/contractABI.json", "r").read()
+        chainID = w3.eth.chain_id
+        nounce = w3.eth.get_transaction_count(userAddressCheckSum)
+        contract = w3.eth.contract(
+            address=self.CONTRACT_ADDRESS, abi=contractABI)
+
+        callFunction = contract.functions.buyShares(addressToBuyCheckSum, shareCount).buildTransaction({
+            "value": payableAmount,
+            "chainId": chainID,
+            "from": userAddressCheckSum,
+            "nounce": nounce
+        })
+
+        signedTransaction = w3.eth.account.sign_transaction(
+            callFunction, private_key=self.PRIVATE_KEY)
+
+        sendTransaction = web3.eth.send_raw_transaction(
+            signedTransaction.rawTransaction)
+
+        transactionReceipt = web3.eth.wait_for_transaction_receipt(
+            sendTransaction)
         return transactionReceipt
