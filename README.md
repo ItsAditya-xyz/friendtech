@@ -16,8 +16,6 @@ For support join discord: [FriendTechFeed](https://discord.gg/sVNcFK73YW)
 
 ```python
 import friendtech
-import json
-
 
 platform = friendtech.Platform()
 globalActivity = platform.getGlobalActivity().json()
@@ -28,8 +26,6 @@ print(globalActivity)
 
 ```python
 import friendtech
-import json
-
 
 platform = friendtech.Platform()
 recentlyJoined = platform.getRecentlyJoinedUsers().json()
@@ -40,7 +36,6 @@ print(recentlyJoined)
 
 ```python
 import friendtech
-import json
 
 jwt = <YOUR JWT TOKEN> # get this from local storage of friendtech in your browser
 platform = friendtech.Platform(jwt=jwt)
@@ -48,17 +43,44 @@ addressInfo = platform.getAddressFromTwitterUsername("itsaditya_xyz").json()
 print(addressInfo)
 ```
 
-3. Getting share and profile info from address
+4. Getting share and profile info from address
 
 ```python
 import friendtech
-import json
-
 
 platform = friendtech.Platform()
 userInfo = platform.getInfoFromAddress("0xeab1e59d08e927ec19c9249f4841395bc4af43b8").json()
 print(userInfo)
 ```
+
+5. Getting holders of an address
+
+```python
+import friendtech
+
+platform = friendtech.Platform()
+holderInfo = platform.getHolders("0xeab1e59d08e927ec19c9249f4841395bc4af43b8").json()
+print(holderInfo)
+```
+
+6. Getting holdings of an address
+
+```python
+import friendtech
+
+platform = friendtech.Platform()
+holdingInfo = platform.getHoldings("0xeab1e59d08e927ec19c9249f4841395bc4af43b8").json()
+print(holdingInfo)
+```
+
+7. Getting info from userID
+```python
+import friendtech
+platform = friendtech.Platform()
+userInfo = platform.getInfoFromUserID(69).json()
+print(userInfo)
+```
+
 
 # Contract
 
@@ -123,6 +145,7 @@ subjectAddress = "0x61da0a10f748a4d0c7060cd0d9907f9174f59a15"
 sharesOwned = contract.getSharesSupply(address, subjectAddress)
 print(sharesOwned)
 ```
+
 
 # WRITING FUNCTIONS OF CONTRACT
 

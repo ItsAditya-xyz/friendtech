@@ -40,3 +40,21 @@ class Platform:
         url = f'{self.BACKEND_URL}/users/{address}'
         response = requests.get(url, headers=self.HEADERS)
         return response
+
+    def getInfoFromUserID(self, userID):
+        '''Returns info from userID of friendtech user.'''
+        url = f'{self.BACKEND_URL}/users/by-id/{userID}'
+        response = requests.get(url, headers=self.HEADERS)
+        return response
+
+    def getHolders(self, address):
+        '''returns token holder of an address'''
+        url = f'{self.BACKEND_URL}/users/{address}/token/holders'
+        response = requests.get(url, headers=self.HEADERS)
+        return response
+    
+    def getHoldings(self, address):
+        '''returns token holdings of an address'''
+        url = f'{self.BACKEND_URL}/users/{address}/token-holdings'
+        response = requests.get(url, headers=self.HEADERS)
+        return response
