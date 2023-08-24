@@ -87,7 +87,7 @@ class Contract:
         w3 = web3.Web3(web3.HTTPProvider(self.BASE_MAINNET))
         contractABI = open("./friendtech/contractABI.json", "r").read()
         chainID = w3.eth.chain_id
-        nounce = w3.eth.get_transaction_count(userAddressCheckSum)
+        nonce = w3.eth.get_transaction_count(userAddressCheckSum)
         contract = w3.eth.contract(
             address=self.CONTRACT_ADDRESS, abi=contractABI)
 
@@ -95,16 +95,16 @@ class Contract:
             "value": payableAmount,
             "chainId": chainID,
             "from": userAddressCheckSum,
-            "nounce": nounce
+            "nonce": nonce
         })
 
         signedTransaction = w3.eth.account.sign_transaction(
             callFunction, private_key=self.PRIVATE_KEY)
 
-        sendTransaction = web3.eth.send_raw_transaction(
+        sendTransaction = w3.eth.send_raw_transaction(
             signedTransaction.rawTransaction)
 
-        transactionReceipt = web3.eth.wait_for_transaction_receipt(
+        transactionReceipt = w3.eth.wait_for_transaction_receipt(
             sendTransaction)
         return transactionReceipt
 
@@ -115,23 +115,23 @@ class Contract:
         w3 = web3.Web3(web3.HTTPProvider(self.BASE_MAINNET))
         contractABI = open("./friendtech/contractABI.json", "r").read()
         chainID = w3.eth.chain_id
-        nounce = w3.eth.get_transaction_count(userAddressCheckSum)
+        nonce = w3.eth.get_transaction_count(userAddressCheckSum)
         contract = w3.eth.contract(
             address=self.CONTRACT_ADDRESS, abi=contractABI)
 
-        callFunction = contract.functions.buyShares(addressToBuyCheckSum, shareCount).buildTransaction({
-            "value": payableAmount,
+        callFunction = contract.functions.sellShares(addressToBuyCheckSum, shareCount).buildTransaction({
+            "value": 0,
             "chainId": chainID,
             "from": userAddressCheckSum,
-            "nounce": nounce
+            "nonce": nonce
         })
 
         signedTransaction = w3.eth.account.sign_transaction(
             callFunction, private_key=self.PRIVATE_KEY)
 
-        sendTransaction = web3.eth.send_raw_transaction(
+        sendTransaction = w3.eth.send_raw_transaction(
             signedTransaction.rawTransaction)
 
-        transactionReceipt = web3.eth.wait_for_transaction_receipt(
+        transactionReceipt = w3.eth.wait_for_transaction_receipt(
             sendTransaction)
         return transactionReceipt
